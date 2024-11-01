@@ -16,8 +16,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func checkServerWorking(w http.ResponseWriter, r *http.Request) {
-	var message = map[string]string{"message": "Hello World!!!"}
+func checkServerWorking(w http.ResponseWriter, _ *http.Request) {
+	var message = map[string]string{"message": "Server is Working !!!"}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(message)
 }
@@ -39,7 +39,7 @@ func main() {
 	models.SetCollection(client.Database("go-todo").Collection("task"))
 	routes.TodoRoutes(r)
 
-	// r.Get("/", routes.CheckServerWorking)
+	r.Get("/", checkServerWorking)
 	PORT := os.Getenv("PORT")
 	fmt.Println("server started at ", PORT)
 	if err := http.ListenAndServe(PORT, r); err != nil {
